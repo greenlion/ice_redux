@@ -1,2 +1,2 @@
 # warpengine
-Modified version of Infobright Community Edition (GPL v2)
+Modified version of Infobright Community Edition 4.0.7 (GPL v2)
