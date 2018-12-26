@@ -1367,8 +1367,8 @@ void TempTable::Union(TempTable* t, int all)
 		::Filter sec_f(t->NoObj());
 		sec_f.Set();
 		GroupDistinctTable dist_table;
-		typedef shared_ptr<VirtualColumn> vc_ptr_t;
-		typedef vector<vc_ptr_t> vcs_t;
+		typedef boost::shared_ptr<VirtualColumn> vc_ptr_t;
+		typedef std::vector<vc_ptr_t> vcs_t;
 		vcs_t first_vcs;
 		vcs_t sec_vcs;
 		uchar* input_buf = NULL;

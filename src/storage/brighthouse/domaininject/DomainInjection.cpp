@@ -174,7 +174,7 @@ void BinaryDataBlock::Decompress(char* src_buf, uint src_buf_size)
 
 DomainInjectionManager::DomainInjectionManager() : use_decomposition(false)
 {
-	decomposers.push_back(shared_ptr<DomainInjectionDecomposer>());
+	decomposers.push_back(boost::shared_ptr<DomainInjectionDecomposer>());
 }
 
 DomainInjectionManager::~DomainInjectionManager()
@@ -201,7 +201,7 @@ void DomainInjectionManager::Save()
 {
 	if (decomposers.size()>1) {
 		std::ofstream outfile(path.c_str());
-		for (std::vector<shared_ptr<DomainInjectionDecomposer> >::const_iterator it = decomposers.begin(); it != decomposers.end(); it++)
+		for (std::vector<boost::shared_ptr<DomainInjectionDecomposer> >::const_iterator it = decomposers.begin(); it != decomposers.end(); it++)
 			if (*it)
 				outfile << (*it)->GetRule() << std::endl;
 	}

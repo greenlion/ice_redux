@@ -169,7 +169,7 @@ RCAttr::RCAttr(char *a_name, int a_num, int t_num, AttributeType a_type, int a_f
 	SetPackOffset(0);
 
 	if(Type().IsLookup()) {
-		dic = shared_ptr<FTree>(new FTree());
+		dic = boost::shared_ptr<FTree>(new FTree());
 		dic->Init(Type().GetPrecision());
 		GlobalDataCache::GetGlobalDataCache().PutObject(FTreeCoordinate(table_number, attr_number), dic); // we do not have 
 	}
@@ -291,7 +291,7 @@ RCAttr::RCAttr(int a_num, AttributeType a_type, int a_field_size, int a_dec_plac
 	SetPackOffset(0);
 
 	if(Type().IsLookup()) {
-		dic = shared_ptr<FTree>(new FTree());
+		dic = boost::shared_ptr<FTree>(new FTree());
 		dic->Init(Type().GetPrecision());
 		GlobalDataCache::GetGlobalDataCache().PutObject(FTreeCoordinate(table_number, attr_number), dic); // we do not have
 	}
@@ -875,7 +875,7 @@ void RCAttr::LoadDictionaries(const char* buf_ptr)
 		SetMaxInt64(*((_uint64*)(buf+8)));
 		buf+=16;
 		if(!dic)			
-			dic = shared_ptr<FTree>(new FTree());			
+			dic = boost::shared_ptr<FTree>(new FTree());			
 		dic->Init((uchar*&)buf);		// note that dic.Init will shift buf to the end of minicompressor stream
 	}
 	// dictionary for numerical values - min, max
@@ -893,7 +893,7 @@ void RCAttr::LoadDictionaries(const char* buf_ptr)
 	}
 }
 
-shared_ptr<FTree> RCAttr::LoadLookupDictFromFile() // bool include_restore_dpn)
+boost::shared_ptr<FTree> RCAttr::LoadLookupDictFromFile() // bool include_restore_dpn)
 {
 	string fn;
 	if (GetDictOffset() != 0)
@@ -1290,7 +1290,7 @@ std::auto_ptr<DataPack> RCAttr::GetDataPack(const DataPackId& dpid, ConnectionIn
 	else
 		dp = auto_ptr<DataPack>(new DataPackImpl<RCNum>(dpns[(int)dpid].GetNoObj()));
 
-	shared_ptr<DataPackLock> dp_lock(new DataPackLock(*this, dpid));
+	boost::shared_ptr<DataPackLock> dp_lock(new DataPackLock(*this, dpid));
 	if(ATI::IsStringType(TypeName())) {
 		dp->dp_lock = dp_lock;
 		if(!Type().IsLookup()) {

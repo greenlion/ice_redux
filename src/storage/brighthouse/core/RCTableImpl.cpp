@@ -799,7 +799,7 @@ void RCTableImpl::Iterator::Initialize(const std::vector<bool>& attrs)
 			RCAttr* attr = table->GetAttr(attr_id);
 			this->attrs.push_back(attr);
 			this->record.push_back(RCDataTypePtr(attr->ValuePrototype(false).Clone()));
-			this->values_fetchers.push_back(boost::bind(&RCAttr::GetValue, attr, _1, ref(*this->record[attr_id]), false));
+			this->values_fetchers.push_back(boost::bind(&RCAttr::GetValue, attr, _1, boost::ref(*this->record[attr_id]), false));
 		} else {
 			this->record.push_back(RCDataTypePtr(table->GetAttr(attr_id)->ValuePrototype(false).Clone()));
 		}

@@ -54,7 +54,7 @@ DataParserForText::DataParserForText(vector<RCAttrLoad*> attrs, Buffer& buffer, 
 
 	for(int i = 0; i < no_attr; i++)
 		if(atis[i].Type() != RC_STRING)
-			value_sizes[i] = shared_ptr<vector<uint> >(new vector<uint>(max_parse_rows));
+			value_sizes[i] = boost::shared_ptr<vector<uint> >(new vector<uint>(max_parse_rows));
 
 #ifndef PURE_LIBRARY
 	cs_info = get_charset_IB((char*)iop.CharsetsDir().c_str(), iop.CharsetInfoNumber(), 0);

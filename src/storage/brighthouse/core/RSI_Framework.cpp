@@ -53,7 +53,7 @@ RSI_Manager::RSI_Manager(const char *_path, int _index_l)
 
 	// load RSI definition
 
-	pool = shared_ptr<RSIndexPool>(new RSIndexPool());
+	pool = boost::shared_ptr<RSIndexPool>(new RSIndexPool());
 	index_level = _index_l;
 }
 

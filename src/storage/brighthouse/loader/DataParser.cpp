@@ -58,7 +58,7 @@ DataParser::DataParser(vector<RCAttrLoad*> attrs, Buffer& buffer, const IOParame
 	cur_attr = -1;
 	row_header_byte_len = 0;
 	for(int i = 0; i < no_attr; i++)
-		objs_sizes.push_back(shared_ptr<vector<uint> >(new vector<uint>(max_parse_rows)));
+		objs_sizes.push_back(boost::shared_ptr<vector<uint> >(new vector<uint>(max_parse_rows)));
 
 	buf_ptr = buf_start = this->buffer->Buf(0);
 	buf_end = buf_start + this->buffer->BufSize();
@@ -69,7 +69,7 @@ DataParser::DataParser(vector<RCAttrLoad*> attrs, Buffer& buffer, const IOParame
 
 	for(int i = 0; i < no_attr; i++) {
 		if (atis[i].Type() == RC_STRING) {
-			value_sizes.push_back(shared_ptr<vector<uint> >(new vector<uint>(max_parse_rows)));
+			value_sizes.push_back(boost::shared_ptr<vector<uint> >(new vector<uint>(max_parse_rows)));
 		} else
 			value_sizes.push_back(objs_sizes[i]);
 	}

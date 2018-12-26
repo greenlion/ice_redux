@@ -61,7 +61,7 @@ SubSelectColumn::SubSelectColumn(TempTable* subq, MultiIndex* mind, TempTable* t
 	for(MysqlExpression::SetOfVars::iterator iter = all_params.begin(); iter != all_params.end(); ++iter) {
 		vector<int>::const_iterator ndx_it = find(aliases->begin(), aliases->end(), iter->tab);
 		if(ndx_it != aliases->end()) {
-			int ndx = (int)distance(aliases->begin(), ndx_it);
+			int ndx = (int)boost::distance(aliases->begin(), ndx_it);
 
 			var_map.push_back(VarMap(*iter,(*tables)[ndx], ndx));
 			var_types[*iter] = (*tables)[ndx]->GetColumnType(var_map[var_map.size()-1].col_ndx);
@@ -94,7 +94,7 @@ SubSelectColumn::SubSelectColumn(const SubSelectColumn& c) : MultiValColumn(c),
 {
 	var_types.empty();
 	if(c.cache.get()) {
-		cache = make_shared<ValueSet>(*c.cache.get());
+		cache = boost::make_shared<ValueSet>(*c.cache.get());
 		//ValueSet* vs = new ValueSet(*c.cache.get());
 		//cache = shared_ptr<ValueSet>(vs);
 	}
@@ -170,7 +170,7 @@ BHTribool SubSelectColumn::DoContains(MIIterator const& mit, RCDataType const& v
 	PrepareSubqResult(mit, false);
 	BHTribool res = false;
 	if(!cache) {
-		cache = shared_ptr<ValueSet>(new ValueSet());
+		cache = boost::shared_ptr<ValueSet>(new ValueSet());
 		cache->Prepare(Type().GetTypeName(), Type().GetScale(), GetCollation());
 	}
 
@@ -230,7 +230,7 @@ BHTribool SubSelectColumn::DoContains(MIIterator const& mit, RCDataType const& v
 void SubSelectColumn::PrepareAndFillCache()
 {
 	if(!cache) {
-		cache = shared_ptr<ValueSet>(new ValueSet());
+		cache = boost::shared_ptr<ValueSet>(new ValueSet());
 		cache->Prepare(Type().GetTypeName(), Type().GetScale(), GetCollation());
 	}
 	for(_int64 i = no_cached_values; i < subq->NoObj(); i++) {

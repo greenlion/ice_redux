@@ -33,8 +33,8 @@ using namespace std;
 using namespace boost;
 using namespace boost::filesystem;
 
-shared_ptr<ChannelOut>	CHMTParameters::channel = shared_ptr<ChannelOut>(new StdOut());
-shared_ptr<Channel>		CHMTParameters::log_output = shared_ptr<Channel>(new Channel(CHMTParameters::channel.get(), true));
+boost::shared_ptr<ChannelOut>	CHMTParameters::channel = boost::shared_ptr<ChannelOut>(new StdOut());
+boost::shared_ptr<Channel>		CHMTParameters::log_output = boost::shared_ptr<Channel>(new Channel(CHMTParameters::channel.get(), true));
 
 CHMTParameters::CHMTParameters()
 	:	print_help(false), print_version(false),

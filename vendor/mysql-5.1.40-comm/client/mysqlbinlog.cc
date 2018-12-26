@@ -982,139 +982,139 @@ end:
 
 static struct my_option my_long_options[] =
 {
-  {"help", '?', "Display this help and exit.",
-   0, 0, 0, GET_NO_ARG, NO_ARG, 0, 0, 0, 0, 0, 0},
-#ifdef __NETWARE__
-  {"autoclose", OPT_AUTO_CLOSE, "Auto close the screen on exit for Netware.",
-   0, 0, 0, GET_NO_ARG, NO_ARG, 0, 0, 0, 0, 0, 0},
-#endif
-  {"base64-output", OPT_BASE64_OUTPUT_MODE,
-    /* 'unspec' is not mentioned because it is just a placeholder. */
-   "Determine when the output statements should be base64-encoded BINLOG "
-   "statements: 'never' disables it and works only for binlogs without "
-   "row-based events; 'auto' is the default and prints base64 only when "
-   "necessary (i.e., for row-based events and format description events); "
-   "'decode-rows' suppresses BINLOG statements for row events, but does "
-   "not exit as an error if a row event is found, unlike 'never'; "
-   "'always' prints base64 whenever possible. 'always' is for debugging "
-   "only and should not be used in a production system. The default is "
-   "'auto'. --base64-output is a short form for --base64-output=always."
-   ,(uchar**) &opt_base64_output_mode_str,
-   (uchar**) &opt_base64_output_mode_str,
-   0, GET_STR, OPT_ARG, 0, 0, 0, 0, 0, 0},
-  /*
-    mysqlbinlog needs charsets knowledge, to be able to convert a charset
-    number found in binlog to a charset name (to be able to print things
-    like this:
-    SET @`a`:=_cp850 0x4DFC6C6C6572 COLLATE `cp850_general_ci`;
-  */
-  {"character-sets-dir", OPT_CHARSETS_DIR,
-   "Directory where character sets are.", (uchar**) &charsets_dir,
-   (uchar**) &charsets_dir, 0, GET_STR, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"database", 'd', "List entries for just this database (local log only).",
-   (uchar**) &database, (uchar**) &database, 0, GET_STR_ALLOC, REQUIRED_ARG,
-   0, 0, 0, 0, 0, 0},
-#ifndef DBUG_OFF
-  {"debug", '#', "Output debug log.", (uchar**) &default_dbug_option,
-   (uchar**) &default_dbug_option, 0, GET_STR, OPT_ARG, 0, 0, 0, 0, 0, 0},
-#endif
-  {"debug-check", OPT_DEBUG_CHECK, "Check memory and open file usage at exit .",
-   (uchar**) &debug_check_flag, (uchar**) &debug_check_flag, 0,
-   GET_BOOL, NO_ARG, 0, 0, 0, 0, 0, 0},
-  {"debug-info", OPT_DEBUG_INFO, "Print some debug info at exit.",
-   (uchar**) &debug_info_flag, (uchar**) &debug_info_flag,
-   0, GET_BOOL, NO_ARG, 0, 0, 0, 0, 0, 0},
-  {"disable-log-bin", 'D', "Disable binary log. This is useful, if you "
-    "enabled --to-last-log and are sending the output to the same MySQL server. "
-    "This way you could avoid an endless loop. You would also like to use it "
-    "when restoring after a crash to avoid duplication of the statements you "
-    "already have. NOTE: you will need a SUPER privilege to use this option.",
-   (uchar**) &disable_log_bin, (uchar**) &disable_log_bin, 0, GET_BOOL,
-   NO_ARG, 0, 0, 0, 0, 0, 0},
-  {"force-if-open", 'F', "Force if binlog was not closed properly.",
-   (uchar**) &force_if_open_opt, (uchar**) &force_if_open_opt, 0, GET_BOOL, NO_ARG,
-   1, 0, 0, 0, 0, 0},
-  {"force-read", 'f', "Force reading unknown binlog events.",
-   (uchar**) &force_opt, (uchar**) &force_opt, 0, GET_BOOL, NO_ARG, 0, 0, 0, 0,
-   0, 0},
-  {"hexdump", 'H', "Augment output with hexadecimal and ASCII event dump.",
-   (uchar**) &opt_hexdump, (uchar**) &opt_hexdump, 0, GET_BOOL, NO_ARG,
-   0, 0, 0, 0, 0, 0},
-  {"host", 'h', "Get the binlog from server.", (uchar**) &host, (uchar**) &host,
-   0, GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"local-load", 'l', "Prepare local temporary files for LOAD DATA INFILE in the specified directory.",
-   (uchar**) &dirname_for_local_load, (uchar**) &dirname_for_local_load, 0,
-   GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"offset", 'o', "Skip the first N entries.", (uchar**) &offset, (uchar**) &offset,
-   0, GET_ULL, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"password", 'p', "Password to connect to remote server.",
-   0, 0, 0, GET_STR, OPT_ARG, 0, 0, 0, 0, 0, 0},
-  {"port", 'P', "Port number to use for connection or 0 for default to, in "
-   "order of preference, my.cnf, $MYSQL_TCP_PORT, "
-#if MYSQL_PORT_DEFAULT == 0
-   "/etc/services, "
-#endif
-   "built-in default (" STRINGIFY_ARG(MYSQL_PORT) ").",
-   (uchar**) &port, (uchar**) &port, 0, GET_INT, REQUIRED_ARG,
-   0, 0, 0, 0, 0, 0},
-  {"position", 'j', "Deprecated. Use --start-position instead.",
-   (uchar**) &start_position, (uchar**) &start_position, 0, GET_ULL,
-   REQUIRED_ARG, BIN_LOG_HEADER_SIZE, BIN_LOG_HEADER_SIZE,
-   /* COM_BINLOG_DUMP accepts only 4 bytes for the position */
-   (ulonglong)(~(uint32)0), 0, 0, 0},
-  {"protocol", OPT_MYSQL_PROTOCOL,
-   "The protocol of connection (tcp,socket,pipe,memory).",
-   0, 0, 0, GET_STR,  REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"read-from-remote-server", 'R', "Read binary logs from a MySQL server",
-   (uchar**) &remote_opt, (uchar**) &remote_opt, 0, GET_BOOL, NO_ARG, 0, 0, 0, 0,
-   0, 0},
-  {"result-file", 'r', "Direct output to a given file.", 0, 0, 0, GET_STR,
-   REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"server-id", OPT_SERVER_ID,
-   "Extract only binlog entries created by the server having the given id.",
-   (uchar**) &server_id, (uchar**) &server_id, 0, GET_ULONG,
-   REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"set-charset", OPT_SET_CHARSET,
-   "Add 'SET NAMES character_set' to the output.", (uchar**) &charset,
-   (uchar**) &charset, 0, GET_STR, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"short-form", 's', "Just show regular queries: no extra info and no "
-   "row-based events. This is for testing only, and should not be used in "
-   "production systems. If you want to suppress base64-output, consider "
-   "using --base64-output=never instead.",
-   (uchar**) &short_form, (uchar**) &short_form, 0, GET_BOOL, NO_ARG, 0, 0, 0, 0,
-   0, 0},
-  {"socket", 'S', "Socket file to use for connection.",
-   (uchar**) &sock, (uchar**) &sock, 0, GET_STR, REQUIRED_ARG, 0, 0, 0, 0, 
-   0, 0},
-  {"start-datetime", OPT_START_DATETIME,
-   "Start reading the binlog at first event having a datetime equal or "
-   "posterior to the argument; the argument must be a date and time "
-   "in the local time zone, in any format accepted by the MySQL server "
-   "for DATETIME and TIMESTAMP types, for example: 2004-12-25 11:25:56 "
-   "(you should probably use quotes for your shell to set it properly).",
-   (uchar**) &start_datetime_str, (uchar**) &start_datetime_str,
-   0, GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
-  {"start-position", OPT_START_POSITION,
-   "Start reading the binlog at position N. Applies to the first binlog "
-   "passed on the command line.",
-   (uchar**) &start_position, (uchar**) &start_position, 0, GET_ULL,
-   REQUIRED_ARG, BIN_LOG_HEADER_SIZE, BIN_LOG_HEADER_SIZE,
-   /* COM_BINLOG_DUMP accepts only 4 bytes for the position */
-   (ulonglong)(~(uint32)0), 0, 0, 0},
-  {"stop-datetime", OPT_STOP_DATETIME,
-   "Stop reading the binlog at first event having a datetime equal or "
-   "posterior to the argument; the argument must be a date and time "
-   "in the local time zone, in any format accepted by the MySQL server "
-   "for DATETIME and TIMESTAMP types, for example: 2004-12-25 11:25:56 "
-   "(you should probably use quotes for your shell to set it properly).",
-   (uchar**) &stop_datetime_str, (uchar**) &stop_datetime_str,
-   0, GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//   {"help", '?', "Display this help and exit.",
+//   0, 0, 0, GET_NO_ARG, NO_ARG, 0, 0, 0, 0, 0, 0},
+//#ifdef __NETWARE__
+//  {"autoclose", OPT_AUTO_CLOSE, "Auto close the screen on exit for Netware.",
+//   0, 0, 0, GET_NO_ARG, NO_ARG, 0, 0, 0, 0, 0, 0},
+//#endif
+//  {"base64-output", OPT_BASE64_OUTPUT_MODE,
+//    /* 'unspec' is not mentioned because it is just a placeholder. */
+//   "Determine when the output statements should be base64-encoded BINLOG "
+//   "statements: 'never' disables it and works only for binlogs without "
+//   "row-based events; 'auto' is the default and prints base64 only when "
+//   "necessary (i.e., for row-based events and format description events); "
+//   "'decode-rows' suppresses BINLOG statements for row events, but does "
+//   "not exit as an error if a row event is found, unlike 'never'; "
+//   "'always' prints base64 whenever possible. 'always' is for debugging "
+//   "only and should not be used in a production system. The default is "
+//   "'auto'. --base64-output is a short form for --base64-output=always."
+//   ,(uchar**) &opt_base64_output_mode_str,
+//   (uchar**) &opt_base64_output_mode_str,
+//   0, GET_STR, OPT_ARG, 0, 0, 0, 0, 0, 0},
+//  /*
+//    mysqlbinlog needs charsets knowledge, to be able to convert a charset
+//    number found in binlog to a charset name (to be able to print things
+//    like this:
+//    SET @`a`:=_cp850 0x4DFC6C6C6572 COLLATE `cp850_general_ci`;
+//  */
+//  {"character-sets-dir", OPT_CHARSETS_DIR,
+//   "Directory where character sets are.", (uchar**) &charsets_dir,
+//   (uchar**) &charsets_dir, 0, GET_STR, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"database", 'd', "List entries for just this database (local log only).",
+//   (uchar**) &database, (uchar**) &database, 0, GET_STR_ALLOC, REQUIRED_ARG,
+//   0, 0, 0, 0, 0, 0},
+//#ifndef DBUG_OFF
+//  {"debug", '#', "Output debug log.", (uchar**) &default_dbug_option,
+//   (uchar**) &default_dbug_option, 0, GET_STR, OPT_ARG, 0, 0, 0, 0, 0, 0},
+//#endif
+//  {"debug-check", OPT_DEBUG_CHECK, "Check memory and open file usage at exit .",
+//   (uchar**) &debug_check_flag, (uchar**) &debug_check_flag, 0,
+//   GET_BOOL, NO_ARG, 0, 0, 0, 0, 0, 0},
+//  {"debug-info", OPT_DEBUG_INFO, "Print some debug info at exit.",
+//   (uchar**) &debug_info_flag, (uchar**) &debug_info_flag,
+//   0, GET_BOOL, NO_ARG, 0, 0, 0, 0, 0, 0},
+//  {"disable-log-bin", 'D', "Disable binary log. This is useful, if you "
+//    "enabled --to-last-log and are sending the output to the same MySQL server. "
+//    "This way you could avoid an endless loop. You would also like to use it "
+//    "when restoring after a crash to avoid duplication of the statements you "
+//    "already have. NOTE: you will need a SUPER privilege to use this option.",
+//   (uchar**) &disable_log_bin, (uchar**) &disable_log_bin, 0, GET_BOOL,
+//   NO_ARG, 0, 0, 0, 0, 0, 0},
+//  {"force-if-open", 'F', "Force if binlog was not closed properly.",
+//   (uchar**) &force_if_open_opt, (uchar**) &force_if_open_opt, 0, GET_BOOL, NO_ARG,
+//   1, 0, 0, 0, 0, 0},
+//  {"force-read", 'f', "Force reading unknown binlog events.",
+//   (uchar**) &force_opt, (uchar**) &force_opt, 0, GET_BOOL, NO_ARG, 0, 0, 0, 0,
+//   0, 0},
+//  {"hexdump", 'H', "Augment output with hexadecimal and ASCII event dump.",
+//   (uchar**) &opt_hexdump, (uchar**) &opt_hexdump, 0, GET_BOOL, NO_ARG,
+//   0, 0, 0, 0, 0, 0},
+//  {"host", 'h', "Get the binlog from server.", (uchar**) &host, (uchar**) &host,
+//   0, GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"local-load", 'l', "Prepare local temporary files for LOAD DATA INFILE in the specified directory.",
+//   (uchar**) &dirname_for_local_load, (uchar**) &dirname_for_local_load, 0,
+//   GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"offset", 'o', "Skip the first N entries.", (uchar**) &offset, (uchar**) &offset,
+//   0, GET_ULL, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"password", 'p', "Password to connect to remote server.",
+//   0, 0, 0, GET_STR, OPT_ARG, 0, 0, 0, 0, 0, 0},
+//  {"port", 'P', "Port number to use for connection or 0 for default to, in "
+//   "order of preference, my.cnf, $MYSQL_TCP_PORT, "
+//#if MYSQL_PORT_DEFAULT == 0
+//   "/etc/services, "
+//#endif
+//   "built-in default (" STRINGIFY_ARG(MYSQL_PORT) ").",
+//   (uchar**) &port, (uchar**) &port, 0, GET_INT, REQUIRED_ARG,
+//   0, 0, 0, 0, 0, 0},
+//  {"position", 'j', "Deprecated. Use --start-position instead.",
+//   (uchar**) &start_position, (uchar**) &start_position, 0, GET_ULL,
+//   REQUIRED_ARG, BIN_LOG_HEADER_SIZE, BIN_LOG_HEADER_SIZE,
+//   /* COM_BINLOG_DUMP accepts only 4 bytes for the position */
+//   (ulonglong)(~(uint32)0), 0, 0, 0},
+//  {"protocol", OPT_MYSQL_PROTOCOL,
+//   "The protocol of connection (tcp,socket,pipe,memory).",
+//   0, 0, 0, GET_STR,  REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"read-from-remote-server", 'R', "Read binary logs from a MySQL server",
+//   (uchar**) &remote_opt, (uchar**) &remote_opt, 0, GET_BOOL, NO_ARG, 0, 0, 0, 0,
+//   0, 0},
+//  {"result-file", 'r', "Direct output to a given file.", 0, 0, 0, GET_STR,
+//   REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"server-id", OPT_SERVER_ID,
+//   "Extract only binlog entries created by the server having the given id.",
+//   (uchar**) &server_id, (uchar**) &server_id, 0, GET_ULONG,
+//   REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"set-charset", OPT_SET_CHARSET,
+//   "Add 'SET NAMES character_set' to the output.", (uchar**) &charset,
+//   (uchar**) &charset, 0, GET_STR, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"short-form", 's', "Just show regular queries: no extra info and no "
+//   "row-based events. This is for testing only, and should not be used in "
+//   "production systems. If you want to suppress base64-output, consider "
+//   "using --base64-output=never instead.",
+//   (uchar**) &short_form, (uchar**) &short_form, 0, GET_BOOL, NO_ARG, 0, 0, 0, 0,
+//   0, 0},
+//  {"socket", 'S', "Socket file to use for connection.",
+//   (uchar**) &sock, (uchar**) &sock, 0, GET_STR, REQUIRED_ARG, 0, 0, 0, 0, 
+//   0, 0},
+//  {"start-datetime", OPT_START_DATETIME,
+//   "Start reading the binlog at first event having a datetime equal or "
+//   "posterior to the argument; the argument must be a date and time "
+//   "in the local time zone, in any format accepted by the MySQL server "
+//   "for DATETIME and TIMESTAMP types, for example: 2004-12-25 11:25:56 "
+//   "(you should probably use quotes for your shell to set it properly).",
+//   (uchar**) &start_datetime_str, (uchar**) &start_datetime_str,
+//   0, GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
+//  {"start-position", OPT_START_POSITION,
+//   "Start reading the binlog at position N. Applies to the first binlog "
+//   "passed on the command line.",
+//   (uchar**) &start_position, (uchar**) &start_position, 0, GET_ULL,
+//   REQUIRED_ARG, BIN_LOG_HEADER_SIZE, BIN_LOG_HEADER_SIZE,
+//   /* COM_BINLOG_DUMP accepts only 4 bytes for the position */
+//   (ulonglong)(~(uint32)0), 0, 0, 0},
+//  {"stop-datetime", OPT_STOP_DATETIME,
+//   "Stop reading the binlog at first event having a datetime equal or "
+//   "posterior to the argument; the argument must be a date and time "
+//   "in the local time zone, in any format accepted by the MySQL server "
+//   "for DATETIME and TIMESTAMP types, for example: 2004-12-25 11:25:56 "
+//   "(you should probably use quotes for your shell to set it properly).",
+//   (uchar**) &stop_datetime_str, (uchar**) &stop_datetime_str,
+//   0, GET_STR_ALLOC, REQUIRED_ARG, 0, 0, 0, 0, 0, 0},
   {"stop-position", OPT_STOP_POSITION,
    "Stop reading the binlog at position N. Applies to the last binlog "
    "passed on the command line.",
    (uchar**) &stop_position, (uchar**) &stop_position, 0, GET_ULL,
-   REQUIRED_ARG, (ulonglong)(~(my_off_t)0), BIN_LOG_HEADER_SIZE,
-   (ulonglong)(~(my_off_t)0), 0, 0, 0},
+   REQUIRED_ARG, (longlong)(~(my_off_t)0), BIN_LOG_HEADER_SIZE,
+   (longlong)(~(my_off_t)0), 0, 0, 0},
   {"to-last-log", 't', "Requires -R. Will not stop at the end of the \
 requested binlog but rather continue printing until the end of the last \
 binlog of the MySQL server. If you send the output to the same MySQL server, \

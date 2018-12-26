@@ -44,7 +44,7 @@ CharsetMigrationTool::CharsetMigrationTool(const CHMTParameters& ic_params)
 	//,	ch_conv_map(shared_ptr<map<int,int> >)
 {
 	//WriteToLog("Starting data integrity checking process...");	
-	ch_conv_map = shared_ptr<map<int, int> >(new map<int, int>());
+	ch_conv_map = boost::shared_ptr<map<int, int> >(new map<int, int>());
 	if(conv_map_path.length()==0)
 		LoadCharsetConversionSymbols(CHMT_CONV_FILE);
 	else

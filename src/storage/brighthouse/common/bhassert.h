@@ -19,7 +19,6 @@ Software Foundation,  Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <cassert>
 #include "system/RCException.h"
-
 struct FailedAssertion {
 	std::string msg;
 	FailedAssertion( std::string const& msg_ ) : msg( msg_ ) {}
@@ -30,7 +29,7 @@ struct FailedAssertion {
 
 #ifdef NDEBUG
 
-#define BHASSERT(condition, message) do { if (!(condition)) { throw RCException(message); } } while(0)
+#define BHASSERT(condition, message) do { if (!(condition)) { throw std::runtime_error(message); } } while(0)
 #define BHASSERT_WITH_NO_PERFORMANCE_IMPACT(condition) assert(condition)
 #else
 /* Debug version of assertion macros. */
@@ -55,7 +54,7 @@ struct FailedAssertion {
 #endif
 
 #ifdef EXTRA_GUARDS
-#define BHASSERT_EXTRA_GUARD( cond, message ) do { if (!(cond)) { throw RCException(message); } } while(0)
+#define BHASSERT_EXTRA_GUARD( cond, message ) do { if (!(cond)) { throw std::runtime_error((message)); } } while(0)
 #else
 #define BHASSERT_EXTRA_GUARD( cond, message ) if( ! ( cond ) ) BHASSERT_WITH_NO_PERFORMANCE_IMPACT(message)
 #endif

@@ -387,7 +387,7 @@ BHErrorCode RCEngine::CreateTable(const char *table, TABLE *from)
 		}
 	}
 
-	shared_ptr<RCTable> tab = boost::shared_ptr<RCTable> (new RCTable(tab_path, charsets, tab_name, m_tab_sequencer++, true));
+	boost::shared_ptr<RCTable> tab = boost::shared_ptr<RCTable> (new RCTable(tab_path, charsets, tab_name, m_tab_sequencer++, true));
 	delete[] tab_path;
 	
 	int fid = 0;

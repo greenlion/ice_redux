@@ -64,7 +64,7 @@ void RCAttrLoadBase::LoadPackInfoForLoader()
 							attr_number));
 
 				if(!dic) {
-					dic = shared_ptr<FTree> (new FTree());
+					dic = boost::shared_ptr<FTree> (new FTree());
 					LoadLookupDictFromFile();
 					ConnectionInfoOnTLS->GetTransaction()->PutObject(FTreeCoordinate(table_number, attr_number), dic);
 				}

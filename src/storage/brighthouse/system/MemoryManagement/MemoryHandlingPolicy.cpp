@@ -248,7 +248,7 @@ size_t MemoryHandling::rc_msize(MEM_HANDLE_MP mh, TrackableObject* owner)
 	PtrHeapMap::iterator h = (it->second)->find(mh);
 	if( h != it->second->end() )
 		return h->second->getBlockSize(mh);
-	BHASSERT("Did not find msize block in map", false);
+	BHASSERT(false,"Did not find msize block in map");
 	return 0;
 }
 
